@@ -1,2 +1,4 @@
+
 # discord-data-analyzer
-A Python script for analyzing your personal data downloaded from discord. 
+
+A Python script to analyze the data discord collects about you and your usage behavior.
