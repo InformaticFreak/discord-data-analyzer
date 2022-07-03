@@ -3,6 +3,11 @@
 
 A Python script to analyze the data discord collects about you and your usage behavior.
 
+## Important Note
+
+Because your discord data contains a lot of private information, you should **never** upload this data anywhere or share it with anyone!
+Instead, program your own application or download an open source application to analyze your data. So you can stay in control of your data.
+
 ## How to use the tool?
 
 1. download your data from discord
