@@ -1,0 +1,7 @@
+emoji=1.7.0
+networkx=2.8
+matplotlib=3.5.1
+numpy=1.21.6
+pillow=9.0.0 #PIL
+tqdm=4.62.3
+wordcloud=1.8.1
