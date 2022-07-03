@@ -6,7 +6,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/informaticfreak/discord-data-analyzer/badge)](https://www.codefactor.io/repository/github/informaticfreak/discord-data-analyzer)&nbsp;
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=informaticfreak/discord-data-analyzer)&nbsp;
 
-<!-- A Python script to analyze the data discord collects about you and your usage behavior. -->
+A Python script to analyze the data discord collects about you and your usage behavior.
 
 ## Important note
 
