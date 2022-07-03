@@ -294,7 +294,7 @@ for i, config in enumerate(wordcloud_configs):
 		max_words = config["max_words"],
 		mask = wordcloud_mask,
 		contour_width = config["contour_width"],
-		stopwords = STOPWORDS
+		stopwords = set()
 	)
 	wordcloud_cloud.generate(wordcloud_words)
 	wordcloud_pbar.update(1)
