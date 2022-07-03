@@ -1,10 +1,10 @@
 
 # Discord-data Analyzer
 
-[![GitHub License](https://img.shields.io/github/license/informaticfreak/discord-data-analyser)](LICENSE)&nbsp;
+[![GitHub License](https://img.shields.io/github/license/informaticfreak/discord-data-analyzer)](LICENSE)&nbsp;
 [![Python Version](https://img.shields.io/badge/python-3-blue)](https://www.python.org/downloads/)&nbsp;
-[![CodeFactor](https://www.codefactor.io/repository/github/informaticfreak/discord-data-analyser/badge)](https://www.codefactor.io/repository/github/informaticfreak/vectometry)&nbsp;
-![visitors](https://visitor-badge.laobi.icu/badge?page_id=informaticfreak/discord-data-analyser)&nbsp;
+[![CodeFactor](https://www.codefactor.io/repository/github/informaticfreak/discord-data-analyzer/badge)](https://www.codefactor.io/repository/github/informaticfreak/discord-data-analyzer)&nbsp;
+![visitors](https://visitor-badge.laobi.icu/badge?page_id=informaticfreak/discord-data-analyzer)&nbsp;
 
 A Python script to analyze the data discord collects about you and your usage behavior.
 
