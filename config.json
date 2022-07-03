@@ -1,4 +1,4 @@
 {
-    "package_directory": "../data/package{}",
-    "results_directory": "../data/results{}"
+    "package_directory": "path/to/your/package",
+    "results_directory": "path/to/your/results"
 }

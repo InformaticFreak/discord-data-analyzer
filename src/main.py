@@ -19,10 +19,10 @@ from wordcloud import WordCloud, ImageColorGenerator, STOPWORDS
 with open(os.path.abspath("../config.json"), "r", encoding="utf8") as fobj:
 	CONFIG = json.load(fobj)
 
-PATH_PREFIX = input("package prefix: ")
+PATH_PREFIX = input("advanced package prefix (or press enter): ")
 PATHS = {
-	"PACKAGE": os.path.abspath(CONFIG["package_directory"].format(PATH_PREFIX)),
-	"RESULTS": os.path.abspath(CONFIG["results_directory"].format(PATH_PREFIX))
+	"PACKAGE": os.path.abspath(CONFIG["package_directory"].format(ID=PATH_PREFIX)),
+	"RESULTS": os.path.abspath(CONFIG["results_directory"].format(ID=PATH_PREFIX))
 }
 PATHS["ACCOUNT"]  = os.path.abspath(os.path.join(PATHS["PACKAGE"], "account"))
 PATHS["ACTIVITY"] = os.path.abspath(os.path.join(PATHS["PACKAGE"], "activity"))

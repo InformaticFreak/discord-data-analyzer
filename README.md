@@ -20,3 +20,8 @@ A Python script to analyze the data discord collects about you and your usage be
 ```cmd
 pip install -r requirements.txt
 ```
+
+## Advanced (if you have multiple packages)
+
+1. add the string `{ID}` to the end of the paths of the `config.json` file; e.g. `path/to/your/package{ID}` and `path/to/your/results{ID}`
+2. run `main.py` from a terminal and at this point (`advanced package prefix (or press enter): `) enter your id to specify your package
