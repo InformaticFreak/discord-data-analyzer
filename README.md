@@ -8,16 +8,16 @@
 
 A Python script to analyze the data discord collects about you and your usage behavior.
 
+>**Requesting a Copy of your Data:**
+>
+>https://support.discord.com/hc/en-us/articles/360004027692-Requesting-a-Copy-of-your-Data
+
 ## Important note
 
 Because your discord data contains a lot of private information, you should **never upload or share your data** anywhere or with anyone!
 Instead, program your own application or download an open source one to analyze your data. So you can stay in control of it.
 
 ## How to use the tool?
-
->**Requesting a Copy of your Data:**
->
->https://support.discord.com/hc/en-us/articles/360004027692-Requesting-a-Copy-of-your-Data
 
 1. download your data from discord
 2. rename the `package.circ` file to `package.zip`
