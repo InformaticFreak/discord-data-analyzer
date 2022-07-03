@@ -1,25 +1,25 @@
 
 # Discord-data Analyzer
 
-[![GitHub License](https://img.shields.io/github/license/informaticfreak/discord-data-analyzer)](LICENSE)&nbsp;
+[![GitHub License](https://img.shields.io/github/license/informaticfreak/Discord-data-analyzer)](LICENSE)&nbsp;
 [![Python Version](https://img.shields.io/badge/python-3-blue)](https://www.python.org/downloads/)&nbsp;
-[![CodeFactor](https://www.codefactor.io/repository/github/informaticfreak/discord-data-analyzer/badge)](https://www.codefactor.io/repository/github/informaticfreak/discord-data-analyzer)&nbsp;
-![visitors](https://visitor-badge.laobi.icu/badge?page_id=informaticfreak/discord-data-analyzer)&nbsp;
+[![CodeFactor](https://www.codefactor.io/repository/github/informaticfreak/Discord-data-analyzer/badge)](https://www.codefactor.io/repository/github/informaticfreak/Discord-data-analyzer)&nbsp;
+![visitors](https://visitor-badge.laobi.icu/badge?page_id=informaticfreak/Discord-data-analyzer)&nbsp;
 
-A Python script to analyze the data discord collects about you and your usage behavior.
+A Python script to analyze the data Discord collects about you and your usage behavior.
 
 >**Requesting a Copy of your Data:**
 >
->https://support.discord.com/hc/en-us/articles/360004027692-Requesting-a-Copy-of-your-Data
+>https://support.Discord.com/hc/en-us/articles/360004027692-Requesting-a-Copy-of-your-Data
 
 ## Important note
 
-Because your discord data contains a lot of private information, you should **never upload or share your data** anywhere or with anyone!
+Because your Discord data contains a lot of private information, you should **never upload or share your data** anywhere or with anyone!
 Instead, program your own application or download an open source one to analyze your data. So you can stay in control of it.
 
 ## How to use the tool?
 
-1. download your data from discord
+1. download your data from Discord
 2. rename the `package.circ` file to `package.zip`
 3. extract the zip-file
 4. add the path to your package directory into the `config.json` file with the `package_directory` key
