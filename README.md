@@ -16,6 +16,7 @@ Instead, program your own application or download an open source one to analyze 
 ## How to use the tool?
 
 >**Requesting a Copy of your Data:**
+>
 >https://support.discord.com/hc/en-us/articles/360004027692-Requesting-a-Copy-of-your-Data
 
 1. download your data from discord
