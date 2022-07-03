@@ -25,7 +25,7 @@ Instead, program your own application or download an open source one to analyze 
 4. add the path to your package directory into the `config.json` file with the `package_directory` key
 5. create a directory for the results
 6. add this results path to the file `config.json`, but with the key `results_directory`
-7. open a terminal inside the `src` folder and run `main.py`
+7. open a terminal inside the `src` folder and run `src/main.py`
 8. wait or type in what the script asks you
 9. explore the results
 
@@ -38,4 +38,4 @@ pip install -r requirements.txt
 ## Advanced (if you have multiple packages)
 
 1. add the string `{ID}` to the end of the paths of the `config.json` file; e.g. `path/to/your/package{ID}` and `path/to/your/results{ID}`
-2. run `main.py` from a terminal and at this point (`advanced package prefix (or press enter): `) enter your id to specify your package
+2. run `src/main.py` from a terminal and at this point (`advanced package prefix (or press enter): `) enter your id to specify your package
