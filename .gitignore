@@ -129,5 +129,6 @@ dmypy.json
 .pyre/
 
 # data-packages
-package_*
-results_*
+/data*
+/package*
+/results*
