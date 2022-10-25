@@ -20,7 +20,7 @@ Instead, program your own application or download an open source one to analyze 
 ## How to use the tool?
 
 1. download your data from Discord
-2. rename the `package.circ` file to `package.zip`
+2. if not, rename the downloaded file to `package.zip`
 3. extract the zip-file
 4. add the path to your package directory into the `config.json` file with the `package_directory` key
 5. create a directory for the results
