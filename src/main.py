@@ -1,7 +1,7 @@
-
-import json, csv
-import os, sys, subprocess
-import unicodedata, emoji
+#!/usr/bin/env python
+import json
+import os, subprocess
+import emoji
 import re
 
 import networkx as netx
@@ -11,8 +11,8 @@ import numpy as np
 from PIL import Image
 from tqdm import tqdm
 from random import choice
-from time import time, sleep
-from wordcloud import WordCloud, ImageColorGenerator, STOPWORDS
+from time import time
+from wordcloud import WordCloud
 
 
 # config
@@ -82,21 +82,21 @@ for directory in DIRS["MESSAGES"]:
 		local_messages = 0
 		
 		# get message file
-		file_path = os.path.join(dir_path, "messages.csv")
+		file_path = os.path.join(dir_path, "messages.json")
 		
 		# open messages file
 		with open(file_path, "r", encoding="utf8") as fobj:
-			csv_reader = csv.reader(fobj)
+			json_reader = json.load(fobj)
 			
 			# iterate messages
-			for data in csv_reader:
+			for data in json_reader:
 				
 				# analyse messages
 				messages += 1
 				local_messages += 1
 				
 				# analyse message contents
-				data_content = data[2]
+				data_content = data['Contents']
 				if data_content != "":
 					message_contents += 1
 					
@@ -107,12 +107,10 @@ for directory in DIRS["MESSAGES"]:
 					message_contents_linebreaks += data_content.count("\n")
 					
 					# analyse content unicode emojis
-					for char_emoji in emoji.UNICODE_EMOJI["en"]:
-						if char_emoji in data_content:
-							message_contents_emoji_unicode += 1
+					message_contents_emoji_unicode += emoji.emoji_count(data_content, unique = True)
 				
 				# analyse message attachments
-				data_attachments = data[3]
+				data_attachments = data['Attachments']
 				if data_attachments != "":
 					message_attachments += data_attachments.count(" ") + 1
 					
@@ -154,23 +152,25 @@ for directory in DIRS["MESSAGES"]:
 					)])
 			# group channel
 			elif data_channel["type"] == 3:
-				for recipient in data_channel["recipients"]:
+				if "recipients" in data_channel:
+					for recipient in data_channel["recipients"]:
+						relships_graph.add_nodes_from([(
+							int(recipient),
+							{
+								"name": f'{DATA_IDS[recipient][:15]}...' if recipient in DATA_IDS else "",
+								"ctype": data_channel["type"]
+							}
+						)])
+			# guild channel
+			elif data_channel["type"] == 0:
+				if "guild" in data_channel and "id" in data_channel["guild"]:
 					relships_graph.add_nodes_from([(
-						int(recipient),
+					int(data_channel["guild"]["id"]),
 						{
-							"name": f'{DATA_IDS[recipient][:15]}...' if recipient in DATA_IDS else "",
+							"name": data_channel["guild"]["name"],
 							"ctype": data_channel["type"]
 						}
 					)])
-			# guild channel
-			elif data_channel["type"] == 0:
-				relships_graph.add_nodes_from([(
-					int(data_channel["guild"]["id"]),
-					{
-						"name": data_channel["guild"]["name"],
-						"ctype": data_channel["type"]
-					}
-				)])
 		
 		# update analyse progress bar
 		analyse_pbar.update(2)
@@ -192,10 +192,24 @@ for directory in DIRS["MESSAGES"]:
 				)])
 			# group channel
 			elif data_channel["type"] == 3:
-				for recipient in data_channel["recipients"]:
+				if "recipients" in data_channel:
+					for recipient in data_channel["recipients"]:
+						relships_graph.add_edges_from([(
+							int(recipient),
+							int(data_channel["id"]),
+							{
+								"cid": int(data_channel["id"]),
+								"messages": local_messages,
+								"name": DATA_IDS[data_channel["id"]],
+								"ctype": data_channel["type"]
+							}
+						)])
+			# guild channel
+			elif data_channel["type"] == 0:
+				if "guild" in data_channel and "id" in data_channel["guild"]:
 					relships_graph.add_edges_from([(
-						int(recipient),
-						int(data_channel["id"]),
+						int(DATA_USER["id"]),
+						int(data_channel["guild"]["id"]),
 						{
 							"cid": int(data_channel["id"]),
 							"messages": local_messages,
@@ -203,18 +217,6 @@ for directory in DIRS["MESSAGES"]:
 							"ctype": data_channel["type"]
 						}
 					)])
-			# guild channel
-			elif data_channel["type"] == 0:
-				relships_graph.add_edges_from([(
-					int(DATA_USER["id"]),
-					int(data_channel["guild"]["id"]),
-					{
-						"cid": int(data_channel["id"]),
-						"messages": local_messages,
-						"name": DATA_IDS[data_channel["id"]],
-						"ctype": data_channel["type"]
-					}
-				)])
 	
 		# update analyse progress bar
 		analyse_pbar.update(2)
@@ -307,27 +309,28 @@ for i, config in enumerate(wordcloud_configs):
 wordcloud_pbar.close()
 
 
-# progress bar init for batch file generator
-batch_pbar_size = 3 + len(message_attachments_links) * 2
-batch_pbar = tqdm(total=batch_pbar_size)
+# progress bar init for script file generator
+script_pbar_size = 3 + len(message_attachments_links) * 2
+script_pbar = tqdm(total=script_pbar_size)
 
-# create download batch for all attachments
-with open(os.path.join(PATHS["RESULTS"], "download.bat"), "w+") as fobj:
-	fobj.writelines("@echo off\n")
-	fobj.writelines("cls\n")
-	batch_pbar.update(1)
+# create download script for all attachments
+script = os.path.join(PATHS["RESULTS"], "download.sh")
+with open(script, "w+") as fobj:
+	os.chmod(script, 0o755)
+	fobj.writelines("#!/usr/bin/env bash\n")
+	script_pbar.update(1)
 
 	categories = ["unknowns", "audios", "docs", "imgs", "codes", "data", "exes", "vids", "zips"]
 
-	# clear directories for batch download
+	# clear directories for script download
 	for category in categories:
-		fobj.writelines("del /s {}\n".format(os.path.abspath(os.path.join(PATHS["RESULTS"], category + "\\*"))))
-	batch_pbar.update(1)
+		fobj.writelines("rm -rf {}\n".format(os.path.abspath(os.path.join(PATHS["RESULTS"], category))))
+	script_pbar.update(1)
 	
-	# create directories for batch download
+	# create directories for script download
 	for category in categories:
 		fobj.writelines("mkdir {}\n".format(os.path.abspath(os.path.join(PATHS["RESULTS"], category))))
-	batch_pbar.update(1)
+	script_pbar.update(1)
 	
 	# setup progress bar
 	scale = (len(message_attachments_links) - 1) // 100
@@ -356,25 +359,23 @@ with open(os.path.join(PATHS["RESULTS"], "download.bat"), "w+") as fobj:
 			category = "vids"
 		elif re.search(r".*\.(zip|7z|tar|rar|gz).*", url_lower):
 			category = "zips"
-		batch_pbar.update(1)
+		script_pbar.update(1)
 		
-		# write to batch file
+		# write to script file
 		output_path = os.path.abspath(os.path.join(PATHS["RESULTS"], f'{category}/attachment_{i}_{category}.{url.split(".")[-1]}'))
-		fobj.writelines(f"cls\n")
-		fobj.writelines(f"echo attachment_{i}_{category}: {min(i/scale, 100):.2f}%% {(i//scale)*'#'}\n")
-		fobj.writelines(f"echo.\n")
-		fobj.writelines(f"curl -o {output_path} {url}\n")
-		batch_pbar.update(1)
+		fobj.writelines(f"echo \"attachment_{i}_{category}: {min(i/scale, 100):.2f}%% {(i//scale)*'#'}\"\n")
+		fobj.writelines(f"curl -s -o '{output_path}' '{url}'\n")
+		script_pbar.update(1)
 
-# close batch progress bar
-batch_pbar.close()
+# close script progress bar
+script_pbar.close()
 
 # ask to download now
 download_now = False
 download_now = bool(re.search(r"[YyJj]", input("download all attachments now (Y/N)?")))
 
-# start batch download
-if download_now: download_batch_return = subprocess.run([os.path.join(PATHS["RESULTS"], "download.bat")])
+# start script download
+if download_now: download_script_return = subprocess.run([os.path.join(PATHS["RESULTS"], "download.sh")])
 
 
 # print character frequency
@@ -394,7 +395,7 @@ print(f"{message_contents_emoji_unicode=}")
 print(f"{message_contents_emoji_custom=}")
 print(f"{message_contents_linebreaks=}")
 print(f"{message_attachments=}")
-print(f"message_attachments_links={str([ choice(message_attachments_links) for i in range(10) ])[:-1]}, ...]")
+print(f"message_attachments_links={str([ choice(message_attachments_links) for _ in range(10) ])[:-1]}, ...]")
 print(f"{message_distinct_characters=}")
 print(f"{message_character_frequency=}")
 
