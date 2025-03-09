@@ -314,22 +314,25 @@ script_pbar_size = 3 + len(message_attachments_links) * 2
 script_pbar = tqdm(total=script_pbar_size)
 
 # create download script for all attachments
-script = os.path.join(PATHS["RESULTS"], "download.sh")
+script = os.path.join(PATHS["RESULTS"], "download.py")
 with open(script, "w+") as fobj:
 	os.chmod(script, 0o755)
-	fobj.writelines("#!/usr/bin/env bash\n")
+	fobj.writelines("#!/usr/bin/env python\n")
+	fobj.writelines("import shutil\n")
+	fobj.writelines("import os\n")
+	fobj.writelines("import urllib.request\n\n")
 	script_pbar.update(1)
 
 	categories = ["unknowns", "audios", "docs", "imgs", "codes", "data", "exes", "vids", "zips"]
 
-	# clear directories for script download
+	# clear directories for batch download
 	for category in categories:
-		fobj.writelines("rm -rf {}\n".format(os.path.abspath(os.path.join(PATHS["RESULTS"], category))))
+		fobj.writelines("try: shutil.rmtree(\"{}\")\nexcept FileNotFoundError: pass\n".format(os.path.abspath(os.path.join(PATHS["RESULTS"], category))))
 	script_pbar.update(1)
 	
-	# create directories for script download
+	# create directories for batch download
 	for category in categories:
-		fobj.writelines("mkdir {}\n".format(os.path.abspath(os.path.join(PATHS["RESULTS"], category))))
+		fobj.writelines("os.makedirs(\"{}\")\n".format(os.path.abspath(os.path.join(PATHS["RESULTS"], category))))
 	script_pbar.update(1)
 	
 	# setup progress bar
@@ -363,11 +366,12 @@ with open(script, "w+") as fobj:
 		
 		# write to script file
 		output_path = os.path.abspath(os.path.join(PATHS["RESULTS"], f'{category}/attachment_{i}_{category}.{url.split(".")[-1]}'))
-		fobj.writelines(f"echo \"attachment_{i}_{category}: {min(i/scale, 100):.2f}%% {(i//scale)*'#'}\"\n")
-		fobj.writelines(f"curl -s -o '{output_path}' '{url}'\n")
+		fobj.writelines(f"print(\"attachment_{i}_{category}: {min(i/scale, 100):.2f}%% {(i//scale)*'#'}\")\n")
+		# 403 with Python-urllib/3.13 user agent
+		fobj.writelines(f"with open('{output_path}', \"wb\") as file: file.write(urllib.request.urlopen(urllib.request.Request('{url}', headers={{\"User-Agent\": \"\"}})).read())\n")
 		script_pbar.update(1)
 
-# close script progress bar
+# close script generator progress bar
 script_pbar.close()
 
 # ask to download now
@@ -375,7 +379,7 @@ download_now = False
 download_now = bool(re.search(r"[YyJj]", input("download all attachments now (Y/N)?")))
 
 # start script download
-if download_now: download_script_return = subprocess.run([os.path.join(PATHS["RESULTS"], "download.sh")])
+if download_now: download_script_return = subprocess.run([os.path.join(PATHS["RESULTS"], "download.py")])
 
 
 # print character frequency
