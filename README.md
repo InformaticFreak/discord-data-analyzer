@@ -3,7 +3,6 @@
 
 [![GitHub License](https://img.shields.io/github/license/informaticfreak/Discord-data-analyzer)](LICENSE)&nbsp;
 [![Python Version](https://img.shields.io/badge/python-3-blue)](https://www.python.org/downloads/)&nbsp;
-[![CodeFactor](https://www.codefactor.io/repository/github/informaticfreak/Discord-data-analyzer/badge)](https://www.codefactor.io/repository/github/informaticfreak/Discord-data-analyzer)&nbsp;
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=informaticfreak/Discord-data-analyzer)&nbsp;
 
 A Python script to analyze the data Discord collects about you and your usage behavior.
@@ -14,8 +13,8 @@ A Python script to analyze the data Discord collects about you and your usage be
 
 ## Important note
 
-Because your Discord data contains a lot of private information, you should **never upload or share your data** anywhere or with anyone!
-Instead, program your own application or download an open source one to analyze your data. So you can stay in control of it.
+**Because your Discord data contains a lot of private information, you should NEVER UPLOAD OR SHARE YOUR DATA anywhere or with anyone!
+Instead, write your own application or download a trusted open source one to review the code and analyze your data yourself, to stay in control of your data.**
 
 ## How to use the tool?
 
